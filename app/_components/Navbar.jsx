@@ -1,89 +1,73 @@
 'use client'
 
 import Link from 'next/link'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { tokenContext } from '../../context/tokenContext';
 import { useRouter } from 'next/navigation'
 
 export default function Navbar() {
-  let {token,setToken}= useContext(tokenContext)
+  let { token, setToken } = useContext(tokenContext)
   const router = useRouter()
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
   function logOut() {
-   localStorage.removeItem('token')
-   setToken(null)
-  console.log(token);
-  router.push('/login')
-}
+    localStorage.removeItem('token')
+    setToken(null)
+    router.push('/login')
+  }
+
+  function toggleMenu() {
+    setIsMenuOpen(!isMenuOpen)
+  }
+
   return (
-<header className="bg-white">
-  <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-    <div className="flex h-16 items-center justify-between">
-      <div className="md:flex md:items-center md:gap-12">
-      <Link className="text-slate-800 font-bold" href='/'  >NOXE</Link>
-
-      </div>
-{token?  <div className="hidden md:block">
-        <nav aria-label="Global">
-          <ul className="flex items-center gap-6 text-sm">
-            <li>
-              <Link className="text-gray-500 transition hover:text-gray-500/75" href="/movies"> Movies </Link>
-            </li>
-
-            <li>
-              <Link className="text-gray-500 transition hover:text-gray-500/75" href="/tvShow"> Tv show </Link>
-            </li>
-
-            <li>
-              <Link className="text-gray-500 transition hover:text-gray-500/75" href="/people"> People </Link>
-            </li>
-
-            <li>
-              <a className="text-gray-500 transition hover:text-gray-500/75" onClick={logOut}> Logout </a>
-            </li>
-
+    <nav className="bg-white border-gray-200 dark:bg-gray-900">
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
+          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">NOXE</span>
+        </Link>
+        <button
+          onClick={toggleMenu}
+          type="button"
+          className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+          aria-controls="navbar-default"
+          aria-expanded={isMenuOpen ? "true" : "false"}
+        >
+          <span className="sr-only">Open main menu</span>
+          <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15" />
+          </svg>
+        </button>
+        <div className={`${isMenuOpen ? 'block' : 'hidden'} w-full md:block md:w-auto`} id="navbar-default">
+          <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+            {token ? (
+              <>
+                <li>
+                  <Link href="/movies" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Movies</Link>
+                </li>
+                <li>
+                  <Link href="/tvShow" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">TV Shows</Link>
+                </li>
+                <li>
+                  <Link href="/people" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">People</Link>
+                </li>
+                <li>
+                  <a onClick={logOut} className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent cursor-pointer">Logout</a>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link href="/login" className="block py-2 px-3 text-white bg-teal-600 rounded md:bg-transparent md:text-teal-600 md:p-0 dark:text-white md:dark:text-teal-500">Login</Link>
+                </li>
+                <li>
+                  <Link href="/register" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 md:bg-transparent md:hover:bg-gray-100 md:border-0 md:hover:text-teal-700 md:p-0 dark:text-white md:dark:hover:text-teal-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Register</Link>
+                </li>
+              </>
+            )}
           </ul>
-          
-        </nav>
-        
-      </div>:
-      <div className="flex items-center gap-4">
-        <div className="sm:flex sm:gap-4">
-          <Link
-            className="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white shadow"
-            href="/login"
-          >
-            Login
-          </Link>
-
-          <div className="hidden sm:flex">
-            <Link
-              className="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600"
-              href="/register"
-            >
-              Register
-            </Link>
-          </div>
         </div>
-
-        <div className="block md:hidden">
-          <button className="rounded bg-gray-100 p-2 text-gray-600 transition hover:text-gray-600/75">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="size-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-        </div>
-      </div>}
-    
-
-    </div>
-  </div>
-</header>
+      </div>
+    </nav>
   )
 }

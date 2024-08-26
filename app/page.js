@@ -55,7 +55,6 @@ export default async function Home() {
               <Link href={'/tvShow/'+ele.id}>
 
           <img src={"https://image.tmdb.org/t/p/w500" + ele.poster_path} className="w-full" alt="" />
-          <h1>{ele.name} </h1>
           </Link>
         </div>
 

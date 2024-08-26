@@ -8,7 +8,6 @@ export default function Movies() {
   const [pageNum, setPageNum] = useState(1);
 
   useEffect(() => {
-    // استدعاء الدالة لجلب البيانات عند تحميل المكون أو تغيير pageNum
     async function fetchMovies() {
       let response = await fetch(`https://api.themoviedb.org/3/trending/movie/day?api_key=664ad047271160036661d41b18ad9034&page=${pageNum}`);
       response = await response.json();
@@ -22,8 +21,8 @@ export default function Movies() {
   return (
     <ProtectedRoute>
       <div className="container mx-auto px-4">
-        <div className="row mb-4 flex flex-wrap">
-          <div className="col-md-4 w-full md:w-1/3">
+        <div className=" mb-4 flex flex-wrap">
+          <div className="w-full md:w-1/3">
             <div className="content pt-5 mb-5">
               <h1 className="relative text-3xl text-red-900">
                 Trending Movies To Watch
